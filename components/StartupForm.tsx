@@ -21,6 +21,7 @@ const StartupForm = () => {
 
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     try {
+      console.log("Form data:", formData);
       const formValues = {
         title: formData.get("title") as string,
         description: formData.get("description") as string,
@@ -30,7 +31,7 @@ const StartupForm = () => {
       };
 
       await formSchema.parseAsync(formValues);
-
+      console.log("Parsed form values:", formValues);
       const result = await createPitch(prevState, formData, pitch);
 
       if (result.status == "SUCCESS") {

@@ -7,6 +7,7 @@ import slugify from "slugify";
 
 export const createPitch = async (state: any, form: FormData, pitch: string) => {
     const session = await auth();
+    console.log("Session:", session)
 
     if(!session) return parseServerActionResponse({
         error: "Unauthorized",
