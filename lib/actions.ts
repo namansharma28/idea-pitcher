@@ -44,6 +44,11 @@ export const createPitch = async (state: any, form: FormData, pitch: string) => 
 
         const result = await writeClient.create(startup)
 
+        console.log(result)
+        if (!result) {  
+            throw new Error("Failed to create startup pitch")
+        }
+
         return parseServerActionResponse({
             ...result,
             status: "SUCCESS",

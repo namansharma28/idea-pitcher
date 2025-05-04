@@ -40,7 +40,11 @@ const StartupForm = () => {
         });
 
         router.push(`/startup/${result._id}`);
-      }
+      }else if (result.status !== "SUCCESS") { 
+        console.log(result);
+        throw new Error("Failed to create startup pitch");
+       }
+
 
       return result;
     } catch (error) {
