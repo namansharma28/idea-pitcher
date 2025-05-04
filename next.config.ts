@@ -2,9 +2,9 @@ import {withSentryConfig} from '@sentry/nextjs';
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  // typescript: {
+  //   ignoreBuildErrors: true,
+  // },
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -17,10 +17,11 @@ const nextConfig: NextConfig = {
       }
     ]
   },
-  // experimental: {
-  //   ppr: 'incremental',
-  //   after: true,
-  // },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb'
+    }
+  },
   devIndicators: {
     appIsrStatus: true,
     buildActivity: true,
