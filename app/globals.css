@@ -117,15 +117,13 @@
     }
 
     .pink_container {
-        background-color: var(--primary);
-        min-height: 530px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        padding: 10px 0px;
+        background: linear-gradient(90deg, #FF6B6B 0%, #FF8E8E 100%);
+        padding: 4rem 0;
         width: 100%;
-        /* margin: 0; */
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .tag {
@@ -169,13 +167,10 @@
     }
 
     .section_container {
-        padding: 2.5rem 1.5rem;
-        /* display: flex; */
-        max-width: 112rem;
+        max-width: 1200px;
         margin: 0 auto;
-        /* align-items: center;*/
-        justify-content:space-between; 
-
+        padding: 2rem 0rem;
+        width: 100%;
     }
     .ping-container {
         position: absolute;
@@ -183,15 +178,25 @@
         right: 2px; 
     }
     .card_grid {
-        display: flex;
-        flex-direction: row;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1.25rem;
-        margin-top: 2rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        width: 100%;
+        margin-left: -3rem;
     }
     @media (max-width: 768px) {
+        .section_container {
+            padding: 0;
+        }
+        
         .card_grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+    }
+    @media (max-width: 480px) {
+        .card_grid {
+            grid-template-columns: 1fr;
         }
     }
     .no-result {
@@ -377,20 +382,20 @@
     }
     /* startupcard */
     .startup-card {
-        background-color: white;
-        border: 3px solid black;
-        padding: 1.5rem;
-        width: 20rem;
-        border-radius: 22px;
-        border-bottom: 8px solid black;
-        border-right: 8px solid black;
-        transition: all 0.5s;
-    }       
+        background: white;
+        border-radius: 1rem;
+        padding: 0 1.5rem;
+        transition: transform 0.2s;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border: 5px solid black;
+        margin: 1rem;
+    }
+
     .startup-card:hover {
-        background-color: #fff0f0;
-        border: 3px solid var(--color-primary);
-        border-bottom: 8px solid var(--color-primary);
-        border-right: 8px solid var(--color-primary);        
+        transform: translateY(-5px);
+
     }
 
     .startup-card_date {
@@ -737,7 +742,14 @@
   .navbar-username {
     color: black;
   }
-
+  .user-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid black;
+    margin-right: 1rem;
+  }
   .search-link {
     text-decoration: none;
     color: black;
