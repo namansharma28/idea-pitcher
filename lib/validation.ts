@@ -7,7 +7,7 @@ export const formSchema = z.object({
         try {
             const res = await fetch(url, {method: 'HEAD'})
             const contentType = res.headers.get("content-type")
-            if(contentType?.startsWith('image/')) {
+            if(contentType?.startsWith('')) {
                 return true;
             } else {
                 return false;
