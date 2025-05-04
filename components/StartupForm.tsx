@@ -18,6 +18,7 @@ const StartupForm = () => {
   const [pitch, setPitch] = useState("");
   const { toast } = useToast();
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     try {
@@ -41,10 +42,10 @@ const StartupForm = () => {
         });
 
         router.push(`/startup/${result._id}`);
-      }else if (result.status !== "SUCCESS") { 
+      } else if (result.status !== "SUCCESS") {
         console.log(result);
         throw new Error("Failed to create startup pitch");
-       }
+      }
 
 
       return result;
@@ -82,7 +83,62 @@ const StartupForm = () => {
   });
 
   return (
-    <form action={formAction} className="startup-form">
+    <form action={async (formData) => {
+      try {
+        console.log("Form data:", formData);
+        const formValues = {
+          title: formData.get("title") as string,
+          description: formData.get("description") as string,
+          category: formData.get("category") as string,
+          link: formData.get("link") as string,
+          pitch,
+        };
+
+        await formSchema.parseAsync(formValues);
+        console.log("Parsed form values:", formValues);
+        const result = await createPitch(true, formData, pitch);
+
+        if (result.status == "SUCCESS") {
+          toast({
+            title: "Success",
+            description: "Your startup pitch has been created successfully",
+          });
+
+          router.push(`/startup/${result._id}`);
+        } else if (result.status !== "SUCCESS") {
+          console.log(result);
+          throw new Error("Failed to create startup pitch");
+        }
+
+
+        return result;
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          const fieldErorrs = error.flatten().fieldErrors;
+
+          setErrors(fieldErorrs as unknown as Record<string, string>);
+
+          toast({
+            title: "Error",
+            description: "Please check your inputs and try again",
+          });
+
+          return { error: "Validation failed", status: "ERROR" };
+        } 
+
+        toast({
+          title: "Error",
+          description: "An unexpected error has occurred",
+          // variant: "destructive",
+        });
+
+        return {
+          
+          error: "An unexpected error has occurred",
+          status: "ERROR",
+        };
+      }
+    }} className="startup-form">
       <div>
         <label htmlFor="title" className="startup-form_label">
           Title
@@ -174,9 +230,10 @@ const StartupForm = () => {
       <Button
         type="submit"
         className="startup-form_btn text-white"
-        disabled={isPending}
+        disabled={isSubmitting}
+
       >
-        {isPending ? "Submitting..." : "Submit Your Pitch"}
+        {isSubmitting ? "Submitting..." : "Submit Your Pitch"}
         <Send className="size-6 ml-2" />
       </Button>
     </form>
