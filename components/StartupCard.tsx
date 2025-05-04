@@ -3,10 +3,23 @@ import { EyeIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Author, Startup } from "@/sanity/types";
+import { Author, Slug, Startup } from "@/sanity/types";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export type StartupTypeCard = Omit<Startup, "author"> & { author?: Author };
+export type StartupTypeCard = {
+  _id: string;
+  _type: 'startup';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string | null;
+  slug: Slug | null;
+  description: string | null;
+  category: string | null;
+  image: string | null;
+  author: any; // ya phir proper author type
+  views: number | null;
+};
 
 const StartupCard = ({ post }: { post: StartupTypeCard }) => {
   const {
