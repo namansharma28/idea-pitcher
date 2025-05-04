@@ -3,8 +3,7 @@
 import { auth } from "@/auth";
 import { parseServerActionResponse } from "./utils";
 import { writeClient } from "@/sanity/lib/write-client";
-var slugify = require('slugify')
-
+import slugify from "slugify";
 
 export const createPitch = async (state: any, form: FormData, pitch: string) => {
     const session = await auth();
@@ -14,18 +13,26 @@ export const createPitch = async (state: any, form: FormData, pitch: string) => 
         status: "ERROR",
     })
 
-    const { title, description, category, link } = Object.fromEntries(Array.from(form).filter(([key]) => key !== "pitch"))
-
-    const slug = slugify(title as string, { lower: true, strict: true })
-
     try {
+        const { title, description, category, link } = Object.fromEntries(Array.from(form).filter(([key]) => key !== "pitch"))
+
+        if (!title || !description || !category || !link || !pitch) {
+            return parseServerActionResponse({
+                error: "All fields are required",
+                status: "ERROR",
+            })
+        }
+
+        const slug = slugify(title as string, { lower: true, strict: true })
+
         const startup = {
+            _type: 'startup',
             title, 
             description, 
             category, 
             image: link,
             slug: {
-                _type: slug,
+                _type: "slug",
                 current: slug,
             },
             author: {
@@ -34,13 +41,13 @@ export const createPitch = async (state: any, form: FormData, pitch: string) => 
             }, 
             pitch,
         }
-        const result = await writeClient.create({_type: 'startup', ...startup})
+
+        const result = await writeClient.create(startup)
 
         return parseServerActionResponse({
             ...result,
             status: "SUCCESS",
         })
-
 
     } catch (error) {
         console.error(error)
